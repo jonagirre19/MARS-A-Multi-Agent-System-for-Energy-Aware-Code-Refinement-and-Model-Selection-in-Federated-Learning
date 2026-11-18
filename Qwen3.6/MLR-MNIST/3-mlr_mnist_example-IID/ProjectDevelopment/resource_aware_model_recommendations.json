@@ -1,0 +1,8 @@
+{
+  "recommendation_1": "Reduce the hidden dimension in the first linear layer from 128 to 32 to drastically decrease the number of trainable parameters and memory footprint.",
+  "rationale_1": "The current model uses a 784x128 linear layer which significantly increases parameter count; reducing mid_dim to 32 will lower both RAM usage and energy consumption while maintaining acceptable performance.",
+  "recommendation_4": "Switch to Bfloat16 Autocast for training and inference operations on CPU to maintain numerical precision while reducing memory usage and improving throughput.",
+  "rationale_4": "Using bf16 autocast allows efficient computation without sacrificing accuracy, particularly useful for low-power devices and large-scale distributed training scenarios.",
+  "recommendation_5": "Remove the ReLU activation function and dropout layer introduced in E1 to simplify the architecture and reduce computational overhead.",
+  "rationale_5": "While ReLU and dropout improve generalization, they introduce additional computations that increase energy consumption and memory usage—removing them improves efficiency at minimal performance cost given the simplicity of MNIST."
+}

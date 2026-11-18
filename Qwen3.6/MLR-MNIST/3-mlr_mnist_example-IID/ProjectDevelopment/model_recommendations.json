@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Replace the single linear layer with a two-layer feedforward network by modifying the Net class to use nn.Linear(784, 128) followed by nn.ReLU() and then nn.Linear(128, 10). This increases model capacity and non-linearity compared to a single linear layer.",
+  "rationale_1": "A single linear layer cannot capture complex patterns in image data; adding hidden layers with ReLU activation enables the model to learn hierarchical representations necessary for MNIST classification.",
+  "recommendation_2": "Add dropout regularization by inserting nn.Dropout(0.2) after the first linear layer in the Net class. This helps prevent overfitting during training especially when using larger networks.",
+  "rationale_2": "Dropout randomly sets a fraction of input units to zero at each update during training, which prevents co-adaptation of neurons and improves generalization on unseen data.",
+  "recommendation_3": "Change the activation function from log_softmax to softmax and update the loss function to use CrossEntropyLoss directly without applying log_softmax in the forward pass. Modify the forward method to return x instead of F.log_softmax(x, dim=1).",
+  "rationale_3": "CrossEntropyLoss internally applies log_softmax, so applying it manually in the forward pass is redundant and can introduce numerical instability. This simplifies computation and reduces risk of errors.",
+  "recommendation_5": "Modify the optimizer from SGD to Adam with learning rate 0.001. Change optimizer initialization to torch.optim.Adam(net.parameters(), lr=0.001).",
+  "rationale_5": "Adam optimizer adapts learning rates per parameter and typically converges faster and more reliably than SGD for many problems including image classification tasks."
+}

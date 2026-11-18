@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Reduce mid_dim from 256 to 64 to significantly decrease the number of trainable parameters and memory footprint.",
+  "rationale_1": "Lowering mid_dim reduces the hidden layer size, directly decreasing both RAM usage and computational requirements, which aligns with energy efficiency goals.",
+  "recommendation_3": "Switch activation function from Swish back to ReLU to reduce computational complexity and improve energy efficiency.",
+  "rationale_3": "Swish introduces additional computation per layer; reverting to ReLU maintains performance while minimizing resource consumption, especially beneficial in low-power settings.",
+  "recommendation_4": "Replace AdamW optimizer with SGD optimizer using momentum to reduce memory overhead and computational cost during training.",
+  "rationale_4": "SGD requires less memory than AdamW due to its simpler state tracking mechanism, reducing peak RAM usage and improving training efficiency in resource-constrained devices.",
+  "recommendation_6": "Enable Bfloat16 Autocast during inference and training to reduce memory usage and increase throughput on CPU-based systems.",
+  "rationale_6": "Using BF16 precision decreases memory consumption and speeds up computations on CPUs, supporting efficient deployment in edge or federated settings."
+}

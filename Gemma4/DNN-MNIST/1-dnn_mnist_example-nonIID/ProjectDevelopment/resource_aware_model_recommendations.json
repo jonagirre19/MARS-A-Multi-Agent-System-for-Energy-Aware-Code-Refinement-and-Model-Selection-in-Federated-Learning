@@ -1,0 +1,8 @@
+{
+  "recommendation_1": "Apply Layer Scaling by reducing mid_dim from 100 to 32 in the Net class constructor.",
+  "rationale_1": "Reducing the hidden dimension drastically lowers the number of trainable parameters in fc1 and fc, minimizing both RAM footprint and the energy required for matrix multiplications.",
+  "recommendation_3": "Integrate Bfloat16 Autocast using torch.amp.autocast during the training and inference loops.",
+  "rationale_3": "BF16 provides a significant reduction in memory usage and speeds up CPU execution on supported hardware by reducing precision without the instability of FP16.",
+  "recommendation_4": "Apply L1 Unstructured Pruning to the fc1 layer with amount=0.4, followed immediately by torch.nn.utils.prune.remove.",
+  "rationale_4": "Pruning 40% of the least significant weights in the largest layer reduces the model's effective complexity and ensures a clean state_dict is transmitted to the Flower server."
+}

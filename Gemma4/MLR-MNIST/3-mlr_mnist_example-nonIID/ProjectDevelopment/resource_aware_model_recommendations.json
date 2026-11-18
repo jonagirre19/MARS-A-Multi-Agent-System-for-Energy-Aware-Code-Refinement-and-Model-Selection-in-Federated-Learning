@@ -1,0 +1,8 @@
+{
+  "recommendation_2": "Apply Bfloat16 Autocast using torch.amp.autocast during the training and inference loops on the CPU.",
+  "rationale_2": "BF16 reduces memory bandwidth pressure and speeds up computation on supported CPU instructions without the significant accuracy loss associated with FP16.",
+  "recommendation_3": "Apply L1 Unstructured Pruning to the fc layer with amount=0.4 and immediately execute prune.remove to make the sparsity permanent.",
+  "rationale_3": "Removing 40% of redundant connections in the linear layer reduces the state_dict size, minimizing the communication energy (Joules) during Flower weight aggregation.",
+  "recommendation_4": "Since the hardware context shows MLP transitions (128 units), scale the hidden dimensions of any added MLP layers to dim=32.",
+  "rationale_4": "Reducing hidden dimensions from 128 to 32 exponentially decreases the parameter count and RAM Max usage while maintaining sufficient capacity for MNIST."
+}

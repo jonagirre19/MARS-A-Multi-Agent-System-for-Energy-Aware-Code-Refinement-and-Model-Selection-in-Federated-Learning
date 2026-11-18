@@ -1,0 +1,10 @@
+{
+  "recommendation_3": "Insert a nn.Dropout(p=0.2) layer between the hidden layer (mid_dim) and the final output layer (self.fc) in the Net class.",
+  "rationale_3": "With high label skew (e.g., Client 0 dominating in class 5), the model is prone to overfitting on the majority class of the local client. Dropout prevents co-adaptation of neurons and improves generalization across clients.",
+  "recommendation_4": "Increase the depth of the MLP by adding a second hidden layer (self.fc2) with 50 units and a ReLU activation between self.fc1 and self.fc.",
+  "rationale_4": "A single hidden layer of 100 units may lack the capacity to represent the complex decision boundaries required when different clients have vastly different class distributions.",
+  "recommendation_5": "Change the activation function in the forward method from F.relu to F.leaky_relu with a negative slope of 0.01.",
+  "rationale_5": "Leaky ReLU prevents the 'dying ReLU' problem where neurons become inactive during training, which can happen frequently in FL when gradients are noisy due to extreme Non-IID imbalances.",
+  "recommendation_6": "Replace the SGD optimizer in the train function with torch.optim.Adam with a learning rate of 0.001.",
+  "rationale_6": "Adam provides adaptive learning rates for each parameter, which helps the model converge faster and more reliably than standard SGD when dealing with the heterogeneous gradient updates typical of Dirichlet-partitioned data."
+}

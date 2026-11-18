@@ -1,0 +1,12 @@
+{
+  "recommendation_1": "Replace the single linear layer with a two-layer fully connected network: change `self.fc = nn.Linear(input_dim, num_classes)` to `self.fc1 = nn.Linear(input_dim, 128); self.fc2 = nn.Linear(128, num_classes)` and add ReLU activation after the first layer.",
+  "rationale_1": "A deeper network with non-linear activations can capture more complex patterns in the MNIST data compared to a single linear layer, improving expressiveness while maintaining simplicity for federated training.",
+  "recommendation_2": "Add dropout regularization by inserting `self.dropout = nn.Dropout(0.2)` after the first fully connected layer and applying it before the final output layer.",
+  "rationale_2": "Dropout prevents overfitting during training, especially beneficial in FL settings where local datasets may be small and prone to overfitting.",
+  "recommendation_3": "Use Swish activation function instead of ReLU by replacing `F.relu` with `F.silu` or `torch.nn.SiLU()` after the first fully connected layer.",
+  "rationale_3": "Swish is a smooth, non-monotonic activation that often outperforms ReLU in deep networks, providing better gradient flow and improved convergence properties.",
+  "recommendation_5": "Modify the final layer to use a multi-layer perceptron (MLP) with hidden units of size 256 and 128 respectively: replace `self.fc = nn.Linear(input_dim, num_classes)` with `self.fc1 = nn.Linear(input_dim, 256); self.fc2 = nn.Linear(256, 128); self.fc3 = nn.Linear(128, num_classes)`.",
+  "rationale_5": "A deeper MLP with intermediate hidden layers increases model capacity to learn more nuanced features from the MNIST dataset without significantly increasing complexity.",
+  "recommendation_6": "Change the optimizer from SGD to AdamW with learning rate 0.001: replace `torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9)` with `torch.optim.AdamW(net.parameters(), lr=0.001, weight_decay=1e-4)`.",
+  "rationale_6": "AdamW offers adaptive learning rates and decoupled weight decay, leading to faster convergence and better generalization than standard SGD in many cases including FL benchmarks."
+}

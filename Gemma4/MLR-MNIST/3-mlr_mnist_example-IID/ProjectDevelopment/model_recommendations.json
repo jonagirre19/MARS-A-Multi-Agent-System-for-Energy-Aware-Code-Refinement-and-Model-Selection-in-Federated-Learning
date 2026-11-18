@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Replace the single linear layer in Net with a Multi-Layer Perceptron (MLP) architecture consisting of two hidden layers with 128 and 64 neurons respectively, using ReLU activation functions.",
+  "rationale_1": "The current model is a linear classifier which lacks the capacity to capture non-linear relationships in the image data; adding hidden layers allows the model to learn hierarchical feature representations.",
+  "recommendation_4": "Add nn.Dropout(0.2) after the hidden layers in the Net architecture.",
+  "rationale_4": "Dropout acts as a regularization technique that prevents overfitting by randomly zeroing activations, forcing the network to learn more robust features, which helps when client data distribution varies.",
+  "recommendation_5": "Replace F.log_softmax and nn.CrossEntropyLoss with a combination of nn.Linear output (raw logits) and nn.CrossEntropyLoss, while experimenting with the Adam optimizer instead of SGD.",
+  "rationale_5": "Adam optimizer typically converges faster than SGD due to adaptive learning rates per parameter, which can be more efficient in federated settings where local communication rounds are limited.",
+  "recommendation_6": "Change the activation function from ReLU to LeakyReLU(0.1) or ELU in the hidden layers of the Net class.",
+  "rationale_6": "LeakyReLU or ELU prevents the 'dying ReLU' problem by allowing a small gradient for negative inputs, ensuring that more neurons remain active during the training process across different clients."
+}

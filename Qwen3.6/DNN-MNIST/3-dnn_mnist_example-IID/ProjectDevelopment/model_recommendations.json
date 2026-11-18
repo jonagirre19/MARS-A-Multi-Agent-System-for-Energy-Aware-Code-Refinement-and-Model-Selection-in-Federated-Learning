@@ -1,0 +1,12 @@
+{
+  "recommendation_1": "Replace the simple linear network with a 2-layer MLP using Swish activation: define Net class with fc1 = nn.Linear(input_dim, mid_dim), fc2 = nn.Linear(mid_dim, mid_dim), fc = nn.Linear(mid_dim, num_classes), and use F.silu instead of F.relu in forward method",
+  "rationale_1": "Swish activation function has been shown to outperform ReLU in deep networks by allowing gradients to flow more effectively, and a 2-layer architecture provides better representation learning than the single hidden layer.",
+  "recommendation_2": "Add dropout regularization with rate 0.2 after first fully connected layer: modify forward method to include x = F.dropout(F.relu(self.fc1(x)), p=0.2, training=self.training)",
+  "rationale_2": "Dropout prevents overfitting by randomly setting activations to zero during training, especially important in FL settings where local datasets may be small and prone to overfitting.",
+  "recommendation_4": "Change optimizer to Adam with learning rate 0.001: replace torch.optim.SGD with torch.optim.Adam(net.parameters(), lr=0.001)",
+  "rationale_4": "Adam optimizer adapts learning rates per parameter and typically converges faster than SGD, especially suitable for non-IID data scenarios in FL where gradient dynamics vary across clients.",
+  "recommendation_5": "Increase model capacity by expanding hidden layer size from 100 to 256: change mid_dim parameter from 100 to 256 in Net initialization",
+  "rationale_5": "A larger hidden layer allows the model to capture more complex patterns in MNIST data while maintaining computational efficiency, crucial for achieving higher accuracy on this benchmark dataset.",
+  "recommendation_6": "Switch to CrossEntropyLoss with label smoothing of 0.1: modify criterion line to use torch.nn.CrossEntropyLoss(label_smoothing=0.1)",
+  "rationale_6": "Label smoothing regularizes the model by preventing overconfidence in predictions, improving robustness and generalization in federated learning where local data may be limited or noisy."
+}

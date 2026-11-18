@@ -1,0 +1,46 @@
+{
+    "0": {
+        "accuracy": 0.084395,
+        "loss": 2.3081
+    },
+    "1": {
+        "accuracy": 0.10074,
+        "loss": 21.36
+    },
+    "2": {
+        "accuracy": 0.10034,
+        "loss": 112480.0
+    },
+    "3": {
+        "accuracy": 0.098566,
+        "loss": 35045000.0
+    },
+    "4": {
+        "accuracy": 0.064511,
+        "loss": 5.2375e+21
+    },
+    "5": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    },
+    "6": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    },
+    "7": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    },
+    "8": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    },
+    "9": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    },
+    "10": {
+        "accuracy": 0.095823,
+        "loss": NaN
+    }
+}

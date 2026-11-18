@@ -1,0 +1,10 @@
+{
+  "recommendation_2": "Apply Bfloat16 Autocast using torch.amp.autocast during the training and inference loops on the CPU.",
+  "rationale_2": "Decreases memory bandwidth requirements and speeds up computation on compatible CPU hardware, reducing the total Joules required per epoch.",
+  "recommendation_3": "Perform L1 Unstructured Pruning on the fc layer with amount=0.4, followed immediately by prune.remove to make the sparsity permanent.",
+  "rationale_3": "Removes 40% of the least important connections in the linear layer, reducing the state_dict size for Flower transmission and decreasing memory overhead.",
+  "recommendation_4": "Apply L1 Unstructured Pruning on the fc layer with amount=0.2, followed immediately by prune.remove to make the sparsity permanent.",
+  "rationale_4": "Provides an additional layer of parameter reduction to ensure the model remains lightweight while maintaining the accuracy seen in E5.",
+  "recommendation_5": "Ensure the fc layer maintains its current direct mapping from input_dim to num_classes, avoiding the hidden layer expansions seen in E1.",
+  "rationale_5": "Prevents the RAM spikes observed in E1 by avoiding the addition of hidden dimensions, keeping the parameter count at the absolute minimum for the task."
+}

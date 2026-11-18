@@ -1,0 +1,8 @@
+{
+  "recommendation_1": "Reduce mid_dim from 100 to 32 in the Net constructor.",
+  "rationale_1": "Drastically lowers the parameter count of fc1 and fc, reducing the memory footprint and energy consumption per forward pass.",
+  "recommendation_3": "Apply Bfloat16 Autocast using torch.amp.autocast during the training and inference loops.",
+  "rationale_3": "Reduces memory bandwidth requirements and energy per operation on supported CPUs by using 16-bit floating point precision.",
+  "recommendation_4": "Apply L1 Unstructured Pruning to fc1 with amount=0.4, followed immediately by prune.remove.",
+  "rationale_4": "Eliminates 40% of redundant weights in the largest layer to ensure a sparse, lightweight state_dict for efficient transmission in Flower."
+}

@@ -1,0 +1,12 @@
+{
+  "recommendation_1": "Reduce mid_dim from 100 to 32 to significantly decrease the number of trainable parameters and memory footprint.",
+  "rationale_1": "Lowering mid_dim reduces the hidden layer size, directly decreasing both RAM usage and computational requirements, which aligns with Green AI principles and maintains compatibility with Flower's federated learning framework.",
+  "recommendation_3": "Apply L1 Unstructured Pruning to remove redundant weights post-training using torch.nn.utils.prune and ensure prune.remove is called to maintain a clean state_dict for Flower compatibility.",
+  "rationale_3": "Pruning removes unnecessary connections, reducing model size and computational overhead without compromising performance, enabling efficient deployment in federated environments.",
+  "recommendation_4": "Switch to Bfloat16 Autocast for CPU-based training/inference to reduce memory usage and improve numerical stability.",
+  "rationale_4": "Using bf16 reduces memory consumption compared to FP32 and provides sufficient precision for training, especially beneficial when operating under strict RAM constraints in Flower-based systems.",
+  "recommendation_5": "Replace ReLU activation with LeakyReLU (negative_slope=0.01) to improve gradient flow and reduce dead neuron issues, leading to better training efficiency.",
+  "rationale_5": "LeakyReLU prevents vanishing gradients more effectively than standard ReLU, improving convergence speed and reducing training time, thus lowering energy expenditure per epoch.",
+  "recommendation_6": "Remove the explicit log_softmax call in the forward pass and rely on CrossEntropyLoss to handle it internally to reduce redundant computations.",
+  "rationale_6": "This avoids double computation of log-softmax and simplifies the forward pass, contributing to reduced memory pressure and improved runtime efficiency within Flower’s distributed training loop."
+}

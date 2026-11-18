@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Replace the single linear layer in the Net class with a Multi-Layer Perceptron (MLP) containing two hidden layers of 128 units each, using ReLU activation functions.",
+  "rationale_1": "The current model is a linear classifier which cannot capture non-linear relationships in the pixel data; adding hidden layers allows the model to learn more complex hierarchical representations of handwritten digits.",
+  "recommendation_3": "Add a Dropout layer with a probability of 0.2 after the hidden layers or before the final linear layer in the Net class.",
+  "rationale_3": "Given the Non-IID Dirichlet distribution (alpha=0.4), clients with high label skew are prone to overfitting their dominant class; dropout provides regularization that improves generalization across the global distribution.",
+  "recommendation_4": "Replace the SGD optimizer in the train function with the Adam optimizer using a learning rate of 0.001.",
+  "rationale_4": "Adam utilizes adaptive learning rates for each parameter, which helps the model converge faster and more stably when dealing with the inconsistent gradient updates typical of Non-IID federated learning.",
+  "recommendation_5": "Change the output activation from F.log_softmax to a linear output and update the loss function in the train function to nn.CrossEntropyLoss() (without using log_softmax manually).",
+  "rationale_5": "Using nn.CrossEntropyLoss directly on raw logits is numerically more stable than combining log_softmax with a separate criterion, reducing the risk of gradient vanishing/explosion during local training."
+}

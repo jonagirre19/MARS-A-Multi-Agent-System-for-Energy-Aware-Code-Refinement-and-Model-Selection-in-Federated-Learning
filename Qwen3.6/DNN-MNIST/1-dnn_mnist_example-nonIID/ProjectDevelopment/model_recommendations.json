@@ -1,0 +1,12 @@
+{
+    "recommendation_1": "Replace the linear layers with a deeper network by adding an additional hidden layer: change `self.fc1 = nn.Linear(input_dim, mid_dim)` and `self.fc = nn.Linear(mid_dim, num_classes)` to `self.fc1 = nn.Linear(input_dim, mid_dim); self.fc2 = nn.Linear(mid_dim, mid_dim); self.fc = nn.Linear(mid_dim, num_classes)`",
+    "rationale_1": "Adding a second fully connected layer increases model capacity to learn more complex representations, which is especially beneficial for non-IID data distributions like MNIST with Dirichlet partitioning.",
+    "recommendation_2": "Change activation function from ReLU to Swish: replace `F.relu(self.fc1(x))` with `F.swish(self.fc1(x))`",
+    "rationale_2": "Swish activation has been shown to outperform ReLU on small datasets like MNIST, particularly when dealing with non-IID data due to its smooth gradient properties.",
+    "recommendation_4": "Use LeakyReLU instead of ReLU for better gradient flow: replace `F.relu(self.fc1(x))` with `F.leaky_relu(self.fc1(x), negative_slope=0.01)`",
+    "rationale_4": "LeakyReLU allows small negative values to pass through, mitigating dead neurons and improving convergence stability for non-IID data with class imbalance.",
+    "recommendation_5": "Modify the final layer to use log_softmax directly on logits: change `x = self.fc(x)` to `x = F.log_softmax(self.fc(x), dim=1)`",
+    "rationale_5": "This ensures consistent probability estimation across all model variations and avoids potential numerical instability issues with log_softmax computation.",
+    "recommendation_6": "Change the learning rate from 0.01 to 0.001 in the optimizer: replace `optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9)` with `optimizer = torch.optim.SGD(net.parameters(), lr=0.001, momentum=0.9)`",
+    "rationale_6": "A lower learning rate (0.001) provides more stable training for non-IID scenarios, reducing the risk of divergence during federated training where local updates may vary significantly."
+}

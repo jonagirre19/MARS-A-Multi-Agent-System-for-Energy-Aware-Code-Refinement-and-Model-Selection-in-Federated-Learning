@@ -1,0 +1,10 @@
+{
+  "recommendation_2": "Implement a Multi-Layer Perceptron (MLP) with two hidden layers of 128 and 64 neurons each, using ReLU activation functions between them.",
+  "rationale_2": "A single linear layer cannot model non-linear decision boundaries. Adding depth and non-linear activations allows the model to learn more complex representations of the digit features.",
+  "recommendation_3": "Add a nn.Dropout(0.2) layer before the final output layer in the Net class.",
+  "rationale_3": "In Federated Learning, clients often have small local datasets which can lead to overfitting on local distributions. Dropout regularizes the model by preventing co-adaptation of neurons, improving generalization across the global population.",
+  "recommendation_4": "Change the activation function from the implicit identity in the current linear model to nn.LeakyReLU(0.1) in a multi-layer setup.",
+  "rationale_4": "LeakyReLU prevents the 'dying ReLU' problem by allowing a small gradient for negative values, which can lead to faster convergence and more stable training in distributed settings.",
+  "recommendation_5": "Replace the SGD optimizer in the train function with torch.optim.Adam with a learning rate of 0.001.",
+  "rationale_5": "Adam implements adaptive learning rates for each parameter, which typically converges much faster than standard SGD and is less sensitive to the initial learning rate choice, especially when client data sizes differ."
+}

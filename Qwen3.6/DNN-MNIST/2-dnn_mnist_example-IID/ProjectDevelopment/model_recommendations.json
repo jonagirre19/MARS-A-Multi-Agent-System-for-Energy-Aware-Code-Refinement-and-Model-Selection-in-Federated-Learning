@@ -1,0 +1,12 @@
+{
+  "recommendation_1": "Replace the linear layers with a deeper network by adding an additional hidden layer: change `Net` class to use `nn.Linear(input_dim, mid_dim)` followed by `nn.Linear(mid_dim, mid_dim)` and then `nn.Linear(mid_dim, num_classes)`",
+  "rationale_1": "Adding a second hidden layer increases model capacity to learn more complex feature representations, which is particularly beneficial for image classification tasks like MNIST where non-linear transformations are needed to capture digit characteristics.",
+  "recommendation_2": "Change activation function from ReLU to Swish: replace `F.relu(self.fc1(x))` with `F.silu(self.fc1(x))`",
+  "rationale_2": "Swish activation function has been shown to outperform ReLU on image classification benchmarks due to its smoothness and ability to mitigate the dying ReLU problem, leading to better gradient flow during training.",
+  "recommendation_3": "Add dropout regularization with probability 0.2: insert `nn.Dropout(0.2)` after the first linear layer in the forward pass before activation",
+  "rationale_3": "Dropout helps prevent overfitting by randomly setting 20% of neurons to zero during training, which forces the network to learn more robust features and generalize better, especially important when dealing with limited client data in FL settings.",
+  "recommendation_5": "Change the final layer to use log_softmax instead of softmax but keep the same output shape: modify `x = F.log_softmax(x, dim=1)` to `x = F.log_softmax(x, dim=1)` (already present) but ensure loss function uses CrossEntropyLoss which expects raw logits",
+  "rationale_5": "CrossEntropyLoss internally applies log_softmax, so keeping raw logits from the last layer allows optimal numerical stability and avoids redundant computation while maintaining the same output format expected by the loss function.",
+  "recommendation_6": "Modify model dimensions to use 200 units in hidden layer instead of 100: update `Net` initialization to `mid_dim=200`",
+  "rationale_6": "Increasing the hidden layer size from 100 to 200 provides more capacity to represent complex patterns in the MNIST data without significantly increasing computational cost, making it suitable for federated learning scenarios with moderate client resources."
+}

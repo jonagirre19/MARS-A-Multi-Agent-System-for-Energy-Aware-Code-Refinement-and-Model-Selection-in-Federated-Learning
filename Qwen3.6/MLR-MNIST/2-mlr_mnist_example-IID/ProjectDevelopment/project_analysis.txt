@@ -1,0 +1,54 @@
+--- PROJECT ANALYSIS: mlr_mnist_example ---
+
+--- PROJECT STRUCTURE ---
+Analysis of Flower project at: PROJECTS/MLR_mnist/mlr_mnist_example
+
+  - strategy.py
+  - server_app.py
+  - task.py
+  - client_app.py
+/ train (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+/ ProjectDevelopment (directory)
+/ test (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+
+--- DETAILED FILE DESCRIPTIONS ---
+
+** Python Files (.py) **
+
+File: client_app.py
+This Python file defines a Flower ClientApp for a federated learning system using PyTorch, specifically tailored for an MNIST classification task. It implements two core methods: `train` and `evaluate`, which handle the local training and evaluation of a neural network model on client devices. The `train` function loads global model weights sent from the server, performs local training on partitioned data, saves the updated model state to the client's context for persistence across rounds, and returns the updated weights along with training metrics. The `evaluate` function loads the global model weights, evaluates the model on local validation data, and returns evaluation metrics such as loss and accuracy. The client also includes helper functions to manage model state serialization and deserialization, ensuring that local model updates can be properly shared and aggregated during the federated learning process.
+
+File: server_app.py
+This Python file defines the main server application for a federated learning system using the Flower framework. It initializes and configures a federated training process where a global model is trained across multiple clients over several rounds. The server loads a global model, sets up a custom strategy (likely implementing FedAvg), and manages the training loop by coordinating client participation and model aggregation. It also handles evaluation of the global model on a local test dataset at each round, saving the final model weights to disk after training completes. The server uses configuration parameters such as number of rounds, client fractions, and device settings to control the federated learning process.
+
+File: strategy.py
+This file defines a custom federated learning strategy named `CustomStrategy` that extends the standard `FedAvg` algorithm from Flower. Its primary purpose is to enhance the basic federated averaging process by adding several auxiliary functionalities: saving model checkpoints when improved accuracy is achieved, logging training and evaluation metrics to both local JSON files and Weights & Biases (W&B) for experiment tracking, and implementing a simple learning rate scheduling mechanism. The strategy manages the complete lifecycle of a federated training session, including configuring training and evaluation rounds, aggregating client-side results, performing centralized server-side evaluation, and persisting results. It integrates with Flower's server application framework to coordinate communication between clients and the central server, while providing detailed logging and monitoring capabilities through W&B integration and local file I/O operations.
+
+File: task.py
+This Python file defines a PyTorch-based federated learning application using the Flower framework. It implements a simple neural network classifier for MNIST digit recognition, with functions for training and testing the model, custom dataset handling for NPZ files, and utilities for managing experiment runs. The `Net` class defines a basic fully-connected neural network architecture, while `train` and `test` functions handle the core training and evaluation logic using PyTorch. The `NPZDataset` class enables loading partitioned MNIST data stored in NumPy's .npz format, and `load_data` provides a mechanism to load partitioned training and test datasets for each client in a federated setting. Additionally, `create_run_dir` manages experiment logging by creating timestamped directories to store results and configuration files. This setup supports distributed training across multiple clients with data partitioning and aggregation mechanisms typical in federated learning systems.
+
+** Other Files (Config, Docs, etc.) **
+
+File: test/0.npz
+test/0.npz is a partitioned MNIST dataset file stored in NumPy's .npz format, containing subset of training data for a federated learning client.
+
+File: test/1.npz
+test/1.npz is a dataset file containing partitioned MNIST data in NumPy's .npz format, used for federated learning experiments.
+
+File: test/2.npz
+test/2.npz is a partitioned MNIST dataset file containing numpy arrays for training or testing data.
+
+File: train/0.npz
+0.npz is a dataset file containing partitioned MNIST data in NumPy's .npz format, used for federated learning experiments.
+
+File: train/1.npz
+train/1.npz is a partitioned MNIST dataset file containing numpy arrays for training data and labels.
+
+File: train/2.npz
+train/2.npz is a dataset file containing partitioned MNIST training data in NumPy's .npz format, used for federated learning.

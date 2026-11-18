@@ -1,0 +1,86 @@
+--- PROJECT ANALYSIS: dnn_mnist_example ---
+
+--- PROJECT STRUCTURE ---
+Analysis of Flower project at: PROJECTS/DNN_mnist/dnn_mnist_example
+
+  - strategy.py
+  - server_app.py
+  - task.py
+  - client_app.py
+/ train (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+/ ProjectDevelopment (directory)
+/ test (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+
+--- DETAILED FILE DESCRIPTIONS ---
+
+** Python Files (.py) **
+
+File: client_app.py
+This file defines the `ClientApp`, which is the core logic for the Flower client-side execution in a Federated Learning setup. It acts as the interface between the Flower framework and the specific PyTorch implementation of the MNIST classification task.
+
+The primary purpose of this file is to implement the federated lifecycle:
+1. **State Management**: It provides helper functions (`save_model_to_state` and `load_model_from_state`) to persist the model's state locally using `RecordDict` and `ArrayRecord`, allowing the client to maintain state across different rounds.
+2. **Training Logic (`@app.train`)**: It handles the local training process by receiving global model weights from the server, loading a specific data partition based on the node's configuration (`partition-id`), executing the training loop via `train_fn`, and returning the updated model weights and training metrics (loss and example count) back to the server.
+3. **Evaluation Logic (`@app.evaluate`)**: It manages local model validation by loading the global weights, applying them to the local model, testing the model on a validation dataset via `test_fn`, and reporting performance metrics (accuracy and loss) to the server.
+4. **Resource Configuration**: It dynamically handles hardware acceleration by detecting CUDA availability and manages data partitioning to ensure each client trains on its own unique subset of the MNIST dataset.
+
+File: server_app.py
+This file defines the `ServerApp`, the central orchestration component of a Flower federated learning system. Its primary purpose is to manage the lifecycle of the federated training process, coordinating between the server-side strategy and the participating clients.
+
+Key responsibilities of this file include:
+
+1.  **Configuration Management**: It extracts critical hyperparameters from the `context.run_config`, such as the number of server rounds, the fraction of clients to be selected for training and evaluation, and the computation device.
+2.  **Model Initialization**: It instantiates the global PyTorch model (`Net`) and wraps its state dictionary into an `ArrayRecord` for compatibility with the Flower framework's communication protocol.
+3.  **Strategy Execution**: It initializes a `CustomStrategy` (a specialized version of FedAvg) and triggers the training loop via `strategy.start()`. This process handles the iterative distribution of the global model to clients and the aggregation of updated weights.
+4.  **Centralized Evaluation**: It implements a global evaluation function (`get_global_evaluate_fn`) that allows the server to validate the global model's performance on a central test set. This function dynamically loads `.npz` data files from a specific directory, converts them into PyTorch tensors, and calculates the loss and accuracy using a provided `test` utility.
+5.  **Artifact Persistence**: It manages the creation of run directories for logging and ensures that the final aggregated global model is saved to disk as `final_model.pt` after all training rounds are completed.
+
+File: strategy.py
+This file defines `CustomStrategy`, a specialized federated learning strategy that extends the standard `FedAvg` (Federated Averaging) algorithm within the Flower framework. Its primary purpose is to augment the basic aggregation process with experiment tracking, model persistence, and dynamic hyperparameter management.
+
+The key functionalities implemented in this file include:
+
+1.  **Dynamic Learning Rate Scheduling**: It overrides `configure_train` to implement a basic learning rate decay (halving the LR at round 5), allowing the server to adjust training hyperparameters on the fly for all clients.
+2.  **Model Checkpointing**: It monitors the global model's performance via the `_update_best_acc` method. Whenever a new peak accuracy is achieved during server-side evaluation, the strategy saves the current global model state as a PyTorch `.pth` file to the local filesystem.
+3.  **Experiment Tracking with W&B**: The `start` method integrates Weights & Biases (`wandb`), logging aggregated training metrics, client-side evaluation metrics, and server-side global evaluation metrics in real-time for every round.
+4.  **Persistent Metrics Logging**: It implements `save_metrics_as_json`, which serializes the training and evaluation history into a JSON file after every round, ensuring that results are preserved even if the process is interrupted.
+5.  **Custom Execution Loop**: The `start` method manages the full federated lifecycle: configuring training/evaluation, coordinating communication via the `Grid` (sending/receiving messages from clients), aggregating results, and performing centralized evaluation.
+
+File: task.py
+This file serves as the core machine learning utility module for a Flower-based Federated Learning system. Its primary purpose is to abstract the PyTorch-specific implementation details, ensuring that the model architecture, training logic, and data handling are decoupled from the federated communication logic (typically found in the `client.py` or `server.py` files).
+
+Specifically, the file performs the following functions:
+
+1.  **Model Definition**: It defines a simple Feed-Forward Neural Network (`Net`) consisting of two linear layers with a ReLU activation and a log-softmax output, designed for classification tasks (specifically configured for MNIST-like dimensions).
+2.  **Training and Evaluation Logic**: It provides two agnostic helper functions:
+    *   `train()`: Handles the standard PyTorch training loop, including the loss function (CrossEntropyLoss) and optimizer (SGD), returning the average training loss.
+    *   `test()`: Handles the model evaluation process, calculating both the loss and accuracy on a provided dataset while ensuring the model is in evaluation mode.
+3.  **Custom Data Pipeline**: It implements a custom `NPZDataset` class that inherits from `torch.utils.data.Dataset` to load data stored in NumPy `.npz` files. This is critical for federated learning, as it allows each client to load its own specific local data partition from disk.
+4.  **Data Partitioning Support**: The `load_data()` function manages the retrieval of specific data shards based on a `partition_id`, enabling the simulation of non-IID or distributed data across multiple federated clients.
+5.  **Experiment Management**: The `create_run_dir()` function provides a utility for organizing experiment outputs by creating timestamped directories and saving the runtime configuration as a JSON file for reproducibility.
+
+** Other Files (Config, Docs, etc.) **
+
+File: test/0.npz
+A NumPy compressed archive containing a shard of the test dataset used for centralized evaluation on the server.
+
+File: test/1.npz
+A NumPy compressed archive file containing a data partition used for server-side global evaluation.
+
+File: test/2.npz
+A NumPy compressed archive file containing a specific partition of the test dataset used for centralized evaluation on the server.
+
+File: train/0.npz
+A NumPy compressed archive file containing a specific partition of the training dataset (partition 0) used by a federated learning client.
+
+File: train/1.npz
+A NumPy compressed archive file containing a specific partition of the training dataset used by a federated learning client.
+
+File: train/2.npz
+A NumPy compressed archive file containing a specific data partition (shard 2) of the dataset used for local training by a federated client.

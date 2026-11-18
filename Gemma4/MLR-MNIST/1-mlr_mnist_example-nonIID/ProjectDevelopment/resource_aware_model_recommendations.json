@@ -1,0 +1,8 @@
+{
+  "recommendation_2": "Apply Bfloat16 Autocast using 'torch.amp.autocast' during the training and inference loops on the CPU.",
+  "rationale_2": "BF16 provides a significant reduction in memory bandwidth requirements and energy per operation while maintaining a dynamic range similar to FP32, preventing the instability often seen with FP16.",
+  "recommendation_3": "Execute L1 Unstructured Pruning on the 'fc' layer with an 'amount=0.4'. Immediately apply 'prune.remove' to finalize the sparsity.",
+  "rationale_3": "Removing 40% of the least significant weights in the 'fc' layer reduces the effective number of parameters that need to be transmitted between the Flower client and server, lowering network energy.",
+  "recommendation_4": "Downscale the model architecture by implementing a hidden layer with 'mid_dim=32' if expanding to an MLP, or keep the single linear layer as is to avoid the RAM spikes observed in the MLP-based experiments.",
+  "rationale_4": "The hardware logs show that moving to a 128-unit MLP (Change B) increases RAM Max% compared to the base model; limiting hidden dimensions to 32 minimizes memory overhead while preserving sufficient capacity for MNIST."
+}

@@ -1,0 +1,8 @@
+{
+  "recommendation_2": "Add dropout regularization with probability 0.2 after the first fully connected layer: insert `self.dropout = nn.Dropout(0.2)` in `__init__` and `x = self.dropout(F.relu(self.fc1(x)))` in `forward`.",
+  "rationale_2": "Dropout helps prevent overfitting in small datasets like MNIST by randomly setting a fraction of inputs to zero during training, which forces the network to learn more robust features.",
+  "recommendation_5": "Change the final output layer to use LogSoftmax with temperature scaling factor 1.5: replace `F.log_softmax(x, dim=1)` with `F.log_softmax(x / 1.5, dim=1)` in forward pass.",
+  "rationale_5": "Temperature scaling in log-softmax can help adjust confidence of predictions and improve calibration, particularly useful in FL settings where client models may have varying confidence levels.",
+  "recommendation_6": "Increase the number of neurons in the hidden layer from 100 to 512 and add a second fully connected layer: define `self.fc2 = nn.Linear(mid_dim, 256)` and `x = F.relu(self.fc1(x))` followed by `x = F.relu(self.fc2(x))` before the final layer.",
+  "rationale_6": "Adding a second hidden layer with increased width allows the model to capture more complex patterns in the data while maintaining manageable complexity for federated training across multiple clients."
+}

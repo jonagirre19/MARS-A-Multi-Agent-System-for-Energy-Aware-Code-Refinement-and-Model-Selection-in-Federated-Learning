@@ -1,0 +1,8 @@
+{
+  "recommendation_2": "Apply Bfloat16 Autocast. Wrap the training and inference loops in torch.amp.autocast for CPU execution.",
+  "rationale_2": "Lowers the precision of computations to 16-bit, drastically reducing the Joules per operation and memory bandwidth pressure on the CPU.",
+  "recommendation_3": "Apply L1 Unstructured Pruning to the fc layer with amount=0.4. Use torch.nn.utils.prune.l1_unstructured and immediately follow with prune.remove.",
+  "rationale_3": "Eliminates 40% of redundant weights in the linear layer to reduce the state_dict size transmitted during Flower federated aggregation cycles.",
+  "recommendation_4": "Execute Layer Scaling on the fc layer. If moving to an MLP based on Hardware Context B, set the first hidden dimension to mid_dim=32 and the second to mid_dim=16.",
+  "rationale_4": "The current MLP configurations (128 and 64) are oversized for the MNIST input_dim, leading to unnecessary RAM Max spikes and higher power draw."
+}

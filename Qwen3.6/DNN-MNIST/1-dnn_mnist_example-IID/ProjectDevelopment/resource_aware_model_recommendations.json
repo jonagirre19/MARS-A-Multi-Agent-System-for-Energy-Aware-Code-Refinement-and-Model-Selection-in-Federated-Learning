@@ -1,0 +1,10 @@
+{
+    "recommendation_1": "Reduce mid_dim from 100 to 32 to significantly decrease the number of trainable parameters and memory footprint.",
+    "rationale_1": "Lowering the hidden dimension reduces the computational load and memory usage, directly impacting both energy consumption and RAM requirements, especially when combined with other optimizations like pruning or quantization.",
+    "recommendation_3": "Use Bfloat16 Autocast during training and inference on CPU to maintain numerical stability while reducing memory consumption.",
+    "rationale_3": "BF16 offers a good balance between precision and efficiency, particularly beneficial for CPU-based training where memory bandwidth is critical and full FP32 is unnecessary.",
+    "recommendation_5": "Remove the final LogSoftmax layer and use CrossEntropyLoss directly in the criterion during training to save computation and memory.",
+    "rationale_5": "CrossEntropyLoss internally applies log-softmax, so including it explicitly in the forward pass adds unnecessary computation and memory overhead, especially in a federated setting where efficiency is crucial.",
+    "recommendation_6": "Replace the ReLU activation with a more memory-efficient variant such as SiLU or GELU if supported, or ensure that ReLU is implemented efficiently through optimized kernels.",
+    "rationale_6": "While ReLU is already efficient, switching to potentially faster alternatives or ensuring optimal kernel utilization can contribute to reduced memory pressure and lower power consumption."
+}

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Training & hardware advisory report</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --surface: #ffffff;
+      --text: #1a1d26;
+      --muted: #5c6370;
+      --accent: #0f3d68;
+      --accent-soft: #e8eef4;
+      --border: #d9dee6;
+      --radius: 8px;
+      --shadow: 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md: 0 4px 24px rgba(15,61,104,.08);
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700&family=Source+Serif+4:wght@500;600&display=swap');
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      line-height: 1.6;
+      font-size: 16px;
+      margin: 0;
+      padding: 2rem 1.25rem 3rem;
+    }
+
+    .report-header {
+      background: linear-gradient(135deg, var(--accent) 0%, #1a5a8a 100%);
+      color: #fff;
+      padding: 2rem 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-md);
+      margin: 0 auto 2rem;
+      max-width: 56rem;
+    }
+
+    .report-header h1 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 600;
+      font-size: clamp(1.35rem, 3vw, 1.75rem);
+      margin: 0 0 .5rem;
+    }
+
+    .report-header p.subtitle {
+      opacity: .92;
+      font-size: .95rem;
+      margin: 0;
+      font-weight: 400;
+    }
+
+    .report-main {
+      max-width: 56rem;
+      margin: 0 auto;
+    }
+
+    .report-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      margin: 0 0 1rem;
+      padding-bottom: .5rem;
+      border-bottom: 2px solid var(--accent-soft);
+    }
+
+    .metrics-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1rem 0;
+    }
+
+    .metrics-table th,
+    .metrics-table td {
+      text-align: left;
+      padding: .75rem 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metrics-table thead th {
+      background-color: var(--accent-soft);
+      color: var(--accent);
+    }
+
+    .metrics-table tbody tr:nth-child(even) {
+      background-color: rgba(15, 61, 104, 0.03);
+    }
+
+    .pre-block {
+      font-family: monospace;
+      font-size: .9rem;
+      background-color: #f8f9fa;
+      padding: 1rem;
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin: .5rem 0;
+    }
+
+    .tree-block {
+      max-height: 22rem;
+      overflow-y: auto;
+    }
+
+    .device-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .device-name {
+      font-weight: 700;
+      margin-top: 0;
+      margin-bottom: .5rem;
+    }
+
+    .product-card {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: .75rem;
+    }
+
+    .product-card h4 {
+      margin: 0 0 .25rem;
+      font-size: 1rem;
+    }
+
+    .product-card p {
+      margin: .25rem 0;
+      font-size: .9rem;
+    }
+
+    .recommendations {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    .recommendations li {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: .75rem;
+    }
+
+    a {
+      color: var(--accent);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    a:hover {
+      border-bottom-color: currentColor;
+    }
+
+    ul {
+      margin: .5rem 0;
+      padding-left: 1.25rem;
+    }
+
+    .report-footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: .8rem;
+      margin-top: 2.5rem;
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+
+      .report-card {
+        box-shadow: none;
+        break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="report-header">
+    <h1>Training & Hardware Advisory Report</h1>
+    <p class="subtitle">Model metrics comparison, project structure overview, hardware recommendations, and literature-based optimization insights.</p>
+  </header>
+
+  <main class="report-main">
+    <!-- Model Evaluation -->
+    <section class="report-card">
+      <h2 class="section-title">Model evaluation</h2>
+      <table class="metrics-table">
+<thead><tr>
+  <th></th>
+  <th>Base model<br><small>results_base_strategy / base_task</small></th>
+  <th>Best model<br><small>results_FedProx_strategy / new_aware_model_0</small></th>
+  <th>Most efficient<br><small>results_FedAvg_strategy / new_aware_model_3</small></th>
+</tr></thead>
+<tbody>
+<tr><td>Accuracy</td><td>0.91921</td><td>0.96686</td><td>0.92029</td></tr>
+<tr><td>Loss</td><td>0.28203</td><td>0.10997</td><td>0.28284</td></tr>
+<tr><td>Avg CPU usage (%)</td><td>31.56</td><td>44.87</td><td>27.47</td></tr>
+<tr><td>Avg Temperature (°C)</td><td>57.24</td><td>59.01</td><td>55.79</td></tr>
+<tr><td>Max RAM usage (%)</td><td>16.71</td><td>14.10</td><td>14.91</td></tr>
+</tbody></table>
+      <p><strong>Comparison (best vs base):</strong></p>
+      <ul>
+        <li>Delta accuracy: +0.04765 (+5.18% rel.)</li>
+        <li>Delta loss: -0.17206 (-61.01% rel.)</li>
+      </ul>
+    </section>
+
+    <!-- Project Analysis -->
+    <section class="report-card">
+      <h2 class="section-title">Project analysis</h2>
+      <h3>Project structure</h3>
+      <pre class="pre-block tree-block">Analysis of Flower project at: PROJECTS/MLR_mnist/mlr_mnist_example
+
+  - strategy.py
+  - server_app.py
+  - task.py
+  - client_app.py
+/ train (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+/ ProjectDevelopment (directory)
+/ test (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz</pre>
+
+      <h3>File descriptions</h3>
+      <h4>client_app.py</h4>
+      <p>This Python file defines a Flower ClientApp for a federated learning system using PyTorch, specifically tailored for an MNIST classification task. It implements the core logic for both training and evaluation phases of a federated learning workflow. The client receives global model weights from the server, performs local training or evaluation on its partitioned data, updates its local state with the new model weights, and returns updated model parameters and metrics (such as loss and accuracy) back to the server. The client handles device placement (CPU/GPU), manages local model persistence via state dictionaries, and supports configurable training parameters like local epochs and learning rate. The structure allows for modular and reusable components through helper functions for loading and saving model states, as well as separate training and testing functions defined in an external <code>task.py</code> module. This client application integrates seamlessly with the Flower framework to participate in distributed model training across multiple clients.</p>
+
+      <h4>server_app.py</h4>
+      <p>This Python file defines the main server application for a federated learning system using the Flower framework. It initializes and configures a federated training process where a global model is trained across multiple clients over several rounds. The server loads a global model, sets up a custom strategy for federated averaging (FedAvg), and manages the training loop by coordinating client participation and model aggregation. It also handles evaluation of the global model at each round using a predefined test dataset stored locally on the server, and saves the final trained model to disk after completion. The server uses configuration parameters such as number of rounds, client fractions for training and evaluation, and device settings to control the training process.</p>
+
+      <h4>strategy.py</h4>
+      <p>This file defines a custom federated learning strategy named <code>CustomStrategy</code> that extends the standard <code>FedAvg</code> algorithm from Flower. Its primary purpose is to enhance the basic federated averaging process by adding functionalities such as saving model checkpoints when better accuracy is achieved, logging training and evaluation metrics to both local JSON files and Weights & Biases (W&B), and implementing a simple learning rate scheduling mechanism. The strategy manages the complete lifecycle of a federated training session, including client-side training, server-side evaluation, and centralized model updates, while maintaining detailed logging and result persistence across training rounds.</p>
+
+      <h4>task.py</h4>
+      <p>This Python file defines a PyTorch-based implementation for federated learning using the Flower framework, specifically tailored for an MNIST-like dataset. It includes the neural network architecture (<code>Net</code>), training and testing functions (<code>train</code>, <code>test</code>) that operate on PyTorch data loaders, custom dataset loading via <code>NPZDataset</code>, and utility functions for creating run directories and loading partitioned data from local <code>.npz</code> files. The structure supports distributed training across multiple clients by loading client-specific subsets of data and performing local model updates. The file also handles device placement (CPU/GPU), data transformations, and evaluation metrics such as loss and accuracy. This setup enables federated learning experiments with a focus on partitioned data handling and model training/validation processes.</p>
+
+      <h4>test/0.npz</h4>
+      <p>test/0.npz is a dataset file containing partitioned data for a federated learning experiment, formatted in NumPy's .npz archive format.</p>
+
+      <h4>test/1.npz</h4>
+      <p>test/1.npz is a partitioned dataset file containing numpy arrays for federated learning.</p>
+
+      <h4>test/2.npz</h4>
+      <p>test/2.npz is a dataset file containing partitioned data for a federated learning experiment, likely used for testing or validation purposes.</p>
+
+      <h4>train/0.npz</h4>
+      <p>0.npz is a partitioned dataset file containing numpy arrays for federated learning.</p>
+
+      <h4>train/1.npz</h4>
+      <p>train/1.npz is a dataset file containing partitioned training data for a federated learning experiment.</p>
+
+      <h4>train/2.npz</h4>
+      <p>train/2.npz is a partitioned dataset file containing numpy arrays for federated learning training.</p>
+    </section>
+
+    <!-- Hardware Advisor (Catalog RAG) -->
+    <section class="report-card">
+      <h2 class="section-title">Hardware advisory</h2>
+
+      <article class="device-section">
+        <h3 class="device-name">Device: hpa02pi</h3>
+        <p><strong>Evaluation:</strong></p>
+        <ul>
+          <li><strong>CPU Usage:</strong> 28.07% → Within limit (20%–50%) ✅</li>
+          <li><strong>Temperature:</strong> 52.20°C → <strong>Exceeds limit (>50°C)</strong> ❌</li>
+          <li><strong>Average RAM Usage:</strong> 9.51% → Within limit (&lt;50%) ✅</li>
+        </ul>
+        <p>Since the <strong>temperature exceeds 50°C</strong>, the device is not compliant with the strict performance limits.</p>
+
+        <p><strong>Recommendations:</strong></p>
+        <ul class="recommendations">
+          <li>
+            <div class="product-card">
+              <h4>Raspberry Pi 5 8GB</h4>
+              <p>Price: 269,99€</p>
+              <p><a href="https://www.pccomponentes.com/raspberry-pi-5-8gb" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 10% under load due to improved thermal design and higher base clock speed (2.4 GHz vs 1.5 GHz), reducing throttling at high loads.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Mini PC Raspberry Pi 5 16GB Quad-Core 2.4GHz LPDDR4x Wi-Fi 5 Bluetooth 5.0</h4>
+              <p>Price: 369,99€</p>
+              <p><a href="https://www.pccomponentes.com/mini-pc-raspberry-pi-5-16gb-quad-core-24ghz-lpddr4x-wi-fi-5-bluetooth-50" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 15% due to superior cooling and 16GB RAM providing more headroom, which helps reduce thermal throttling.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Placa Base Raspberry Pi 5 4GB</h4>
+              <p>Price: 156,64€</p>
+              <p><a href="https://www.pccomponentes.com/raspberry-pi-5-4gb" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 8% due to better thermal efficiency compared to Pi 4 and higher core frequency (2.4 GHz), improving performance per watt and lowering heat output.</p>
+            </div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="device-section">
+        <h3 class="device-name">Device: hpa05pi</h3>
+        <p><strong>Evaluation:</strong></p>
+        <ul>
+          <li><strong>CPU Usage:</strong> 29.15% → Within limit (20%–50%) ✅</li>
+          <li><strong>Temperature:</strong> 55.12°C → Exceeds limit (>50°C) ❌</li>
+          <li><strong>Average RAM Usage:</strong> 9.66% → Within limit (&lt;50%) ✅</li>
+        </ul>
+        <p>Since the <strong>temperature exceeds 50°C</strong>, we must provide <strong>3 recommendations</strong> to address this issue.</p>
+
+        <p><strong>Recommendations:</strong></p>
+        <ul class="recommendations">
+          <li>
+            <div class="product-card">
+              <h4>Raspberry Pi 5 8GB</h4>
+              <p>Price: 269,99€</p>
+              <p><a href="https://www.pccomponentes.com/raspberry-pi-5-8gb" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: ~5–10% due to improved thermal design and higher base frequency.</p>
+              <p>The Raspberry Pi 5 features an ARM Cortex-A76 CPU at 2.4 GHz, which offers better performance per watt compared to the Pi 4, helping reduce thermal throttling.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Mini PC Raspberry Pi 5 16GB Quad-Core 2.4GHz LPDDR4x Wi-Fi 5 Bluetooth 5.0</h4>
+              <p>Price: 369,99€</p>
+              <p><a href="https://www.pccomponentes.com/mini-pc-raspberry-pi-5-16gb-quad-core-24ghz-lpddr4x-wi-fi-5-bluetooth-50" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: ~8–12% due to enhanced cooling and more robust thermal management.</p>
+              <p>This model includes a more efficient heatsink and better airflow design, reducing temperature spikes during high load.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Placa de desarrollo Raspberry Pi 5B 8GB LPDDR4x-SDRAM ARM Cortex-A76</h4>
+              <p>Price: 232€</p>
+              <p><a href="https://www.pccomponentes.com/placas-base-raspberry-pi-placa-de-desarrollo-raspberry-pi-5b-8gb-lpddr4x-sdram-arm-cortex-a76" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: ~6–10% thanks to optimized board layout and lower operating temperatures.</p>
+              <p>Designed for developers, this board ensures stable operation under sustained loads without overheating.</p>
+            </div>
+          </li>
+        </ul>
+      </article>
+
+      <article class="device-section">
+        <h3 class="device-name">Device: hpa06pi</h3>
+        <p><strong>Analysis:</strong> The user's device exceeds the strict performance limits:</p>
+        <ul>
+          <li><strong>CPU Usage</strong>: 77.38% (exceeds 50%)</li>
+          <li><strong>Temperature</strong>: 69.72°C (exceeds 50°C)</li>
+          <li><strong>Average RAM Usage</strong>: 12.24% (within limit)</li>
+        </ul>
+        <p>Since both CPU usage and temperature exceed the allowed thresholds, we must provide 3 recommendations to address these issues.</p>
+
+        <p><strong>Recommendations:</strong></p>
+        <ul class="recommendations">
+          <li>
+            <div class="product-card">
+              <h4>Raspberry Pi 5 8GB</h4>
+              <p>Price: 269,99€</p>
+              <p><a href="https://www.pccomponentes.com/raspberry-pi-5-8gb" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 30% due to 2.5x faster CPU (Cortex-A76 vs Cortex-A72), allowing better load handling at lower utilization.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Mini PC Raspberry Pi 5 16GB Quad-Core 2.4GHz LPDDR4x Wi-Fi 5 Bluetooth 5.0</h4>
+              <p>Price: 369,99€</p>
+              <p><a href="https://www.pccomponentes.com/mini-pc-raspberry-pi-5-16gb-quad-core-24ghz-lpddr4x-wi-fi-5-bluetooth-50" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 40% due to higher clock speed and 16GB RAM providing more headroom under load.</p>
+            </div>
+          </li>
+          <li>
+            <div class="product-card">
+              <h4>Raspberry Pi 5 4GB</h4>
+              <p>Price: 156,64€</p>
+              <p><a href="https://www.pccomponentes.com/raspberry-pi-5-4gb" target="_blank" rel="noopener noreferrer">View product</a></p>
+              <p>Estimated CPU Drop: Up to 25% thanks to the faster Cortex-A76 processor and improved thermal efficiency compared to Pi 4.</p>
+            </div>
+          </li>
+        </ul>
+      </article>
+    </section>
+
+    <!-- Literature Survey RAG -->
+    <section class="report-card">
+      <h2 class="section-title">Recommendations from the RAG system</h2>
+      <p>Since the nodes are battery-powered and do not have access to renewable energy excess, energy efficiency must be prioritized through local computation optimization rather than relying on external power sources. Given that the network is not expensive or limited, and there is no intermittent connectivity, it is possible to schedule training rounds more effectively to reduce unnecessary resource consumption.</p>
+      <p>Since latency strict deadline is true and partial offloading is not allowed, model inference and training must be kept within node constraints to meet time requirements. This implies optimizing model size and computational load to prevent delays caused by excessive processing.</p>
+      <p>Given that the task involves time-series sensor data for bearing fault prediction, and nodes operate under an IID condition with uniform class distribution, federated averaging can maintain convergence without requiring complex client selection strategies. However, due to limited computational resources and the need for low-latency responses, models should be lightweight and optimized for edge deployment.</p>
+      <p>Since the system does not support segment sharing, each node must independently manage its own model updates and computations. Therefore, techniques such as model pruning or quantization are recommended to reduce model size and computation load while preserving performance.</p>
+      <p>Since the system does not allow partial offloading, all computations must occur locally. Thus, methods that reduce local training time and energy consumption are critical. Techniques like early stopping based on validation metrics or dynamic batch sizing can help minimize compute usage without sacrificing accuracy.</p>
+      <p>For thermal management, given that temperature readings are not provided but the system runs continuously, proactive measures should be taken to avoid overheating. Since CPU usage is expected to be moderate to high due to continuous monitoring and processing, implementing adaptive clock scaling or reducing computation intensity during peak activity periods will mitigate potential thermal throttling.</p>
+      <p>In summary, optimizations should focus on minimizing local compute load through model compression, scheduling efficient training cycles, and managing thermal conditions proactively. These approaches align with maintaining model convergence under resource-constrained settings while meeting strict timing constraints.</p>
+    </section>
+  </main>
+
+  <footer class="report-footer">
+    Generated report — model metrics and RAG advisory output.
+  </footer>
+</body>
+</html>

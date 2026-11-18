@@ -1,0 +1,15 @@
+{
+    "CPU": {
+        "Minimum frequency (MHz)": 600.0,
+        "Maximum frequency (MHz)": 1800.0,
+        "Average frequency (MHz)": 1788.9570552147238,
+        "CPU average usage (%)": 35.212554293087294,
+        "Average temperature (°C)": 56.9291472392638
+    },
+    "RAM": {
+        "Total (GB)": 7.626983642578125,
+        "RAM average usage (%)": 10.684164846398208,
+        "RAM maximum usage (%)": 12.605583364343131
+    },
+    "Energy zones": []
+}

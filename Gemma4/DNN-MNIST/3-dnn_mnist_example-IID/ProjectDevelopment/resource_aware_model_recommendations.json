@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Reduce mid_dim from 100 to 32 in the Net class constructor.",
+  "rationale_1": "Drastically decreases the number of trainable parameters in fc1 and fc, reducing the memory footprint and energy consumption during gradient computation.",
+  "recommendation_3": "Apply Bfloat16 Autocast using torch.amp.autocast during the training and inference loops on the CPU.",
+  "rationale_3": "Lowers memory bandwidth requirements and reduces the energy per floating-point operation compared to FP32.",
+  "recommendation_4": "Apply L1 Unstructured Pruning to the fc1 layer with amount=0.4, followed immediately by prune.remove.",
+  "rationale_4": "Eliminates 40% of redundant weights in the largest layer to reduce the state_dict size transmitted between the Flower client and server.",
+  "recommendation_5": "Apply L1 Unstructured Pruning to the fc layer with amount=0.2, followed immediately by prune.remove.",
+  "rationale_5": "Further minimizes the model size and reduces the computational energy required for the final linear transformation."
+}

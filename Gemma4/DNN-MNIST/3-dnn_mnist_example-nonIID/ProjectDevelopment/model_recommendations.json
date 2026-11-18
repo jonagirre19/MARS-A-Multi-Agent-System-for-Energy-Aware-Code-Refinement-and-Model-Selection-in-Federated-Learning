@@ -1,0 +1,10 @@
+{
+  "recommendation_2": "Add a nn.Dropout(0.2) layer between the fc1 and fc layers in the existing Net class.",
+  "rationale_2": "With high label skew (e.g., Client 0 dominated by class 5), the model is prone to overfitting the majority class on local clients; dropout provides necessary regularization to improve global generalization in Federated Learning.",
+  "recommendation_3": "Replace the F.relu activation in the forward method with F.leaky_relu(x, negative_slope=0.01) or F.elu(x).",
+  "rationale_3": "ReLU can suffer from 'dying neurons' where gradients become zero; Leaky ReLU or ELU ensures that neurons continue to learn even for negative inputs, which helps stability during the divergent local updates typical of Non-IID data.",
+  "recommendation_4": "Increase the depth of the MLP by adding a second hidden layer: nn.Linear(mid_dim, mid_dim) between fc1 and fc, with a total mid_dim of 256.",
+  "rationale_4": "The current model is very shallow (one hidden layer). A deeper architecture with increased capacity can better model the complex decision boundaries required to separate 10 classes when training data is unevenly distributed.",
+  "recommendation_5": "Replace the SGD optimizer in the train function with torch.optim.Adam(net.parameters(), lr=lr).",
+  "rationale_5": "Adam uses adaptive learning rates for each parameter, which is generally more robust than standard SGD when dealing with the noisy gradients produced by highly skewed local datasets in a Federated environment."
+}

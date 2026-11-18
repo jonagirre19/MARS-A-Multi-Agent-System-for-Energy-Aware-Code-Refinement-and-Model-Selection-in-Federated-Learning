@@ -1,0 +1,42 @@
+{
+    "1": {
+        "eval_acc": 0.52203,
+        "eval_loss": 31.5
+    },
+    "2": {
+        "eval_acc": 0.18965,
+        "eval_loss": 2.9201
+    },
+    "3": {
+        "eval_acc": 0.14656,
+        "eval_loss": 262.92
+    },
+    "4": {
+        "eval_acc": 0.17799,
+        "eval_loss": 3.9686
+    },
+    "5": {
+        "eval_acc": 0.1969,
+        "eval_loss": 4.2739
+    },
+    "6": {
+        "eval_acc": 0.15336,
+        "eval_loss": 2.3128
+    },
+    "7": {
+        "eval_acc": 0.18216,
+        "eval_loss": 3.0536
+    },
+    "8": {
+        "eval_acc": 0.12622,
+        "eval_loss": 2.3342
+    },
+    "9": {
+        "eval_acc": 0.11091,
+        "eval_loss": 2.4543
+    },
+    "10": {
+        "eval_acc": 0.11434,
+        "eval_loss": 2.437
+    }
+}

@@ -1,0 +1,10 @@
+{
+  "recommendation_3": "Implement a Dropout layer with a probability of 0.2 after the first ReLU activation in the Net class.",
+  "rationale_3": "With high label skew (e.g., Client 0 dominating class 5), there is a high risk of local overfitting to the majority class; Dropout provides regularization to improve generalization to the global distribution.",
+  "recommendation_4": "Replace the ReLU activation function in the Net class with the LeakyReLU activation function with a negative slope of 0.01.",
+  "rationale_4": "LeakyReLU prevents the 'dying ReLU' problem where neurons become inactive, which is particularly useful in FL when local gradients may be sparse or highly biased due to Dirichlet partitioning.",
+  "recommendation_5": "Increase the model depth by adding a second hidden layer 'fc2 = nn.Linear(mid_dim, mid_dim)' between fc1 and the final fc layer, keeping mid_dim at 100.",
+  "rationale_5": "A deeper network can learn more complex representations of the digits, providing the capacity needed to better distinguish between similar-looking classes across different client distributions.",
+  "recommendation_6": "Change the optimizer in the train function from torch.optim.SGD to torch.optim.Adam with a learning rate of 0.001.",
+  "rationale_6": "Adam utilizes adaptive learning rates for each parameter, which is generally more robust than vanilla SGD when dealing with the noisy gradients inherent in Non-IID federated settings."
+}

@@ -1,0 +1,54 @@
+--- PROJECT ANALYSIS: dnn_mnist_example ---
+
+--- PROJECT STRUCTURE ---
+Analysis of Flower project at: PROJECTS/DNN_mnist/dnn_mnist_example
+
+  - strategy.py
+  - server_app.py
+  - task.py
+  - client_app.py
+/ train (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+/ ProjectDevelopment (directory)
+/ test (directory)
+  - 1.npz
+  - 2.npz
+  - 0.npz
+
+--- DETAILED FILE DESCRIPTIONS ---
+
+** Python Files (.py) **
+
+File: client_app.py
+This file defines a Flower ClientApp for a federated learning system using PyTorch, specifically tailored for training and evaluating a neural network on the MNIST dataset. It implements two core methods: `train` and `evaluate`, which handle the local training and evaluation logic respectively. The client loads partitioned data based on node configuration, trains or evaluates a model using helper functions from `task.py`, and manages model state persistence across rounds. It communicates with the central server by sending updated model parameters and evaluation metrics in response to messages, ensuring compatibility with Flower's federated learning framework through the use of `ArrayRecord`, `MetricRecord`, and `RecordDict` for serialization and communication.
+
+File: server_app.py
+This file defines the main server application for a federated learning system using the Flower framework, specifically designed for training a deep neural network on the MNIST dataset. It sets up the server environment, initializes the global model and custom federated learning strategy, configures training parameters from the run configuration, and manages the execution of multiple rounds of federated averaging. The server loads test data from NPZ files, evaluates the global model's performance after each round, and saves the final trained model to disk. The `get_global_evaluate_fn` function defines how the global model is evaluated during the federated learning process by loading and processing test data from local files.
+
+File: strategy.py
+This file defines a custom federated learning strategy named `CustomStrategy` that extends the standard `FedAvg` algorithm from Flower. Its primary purpose is to enhance the basic federated averaging process by adding functionality for saving model checkpoints, logging metrics to Weights & Biases (W&B), and persisting results to disk. The strategy overrides key methods such as `configure_train` to implement a simple learning rate schedule, and `start` to orchestrate the complete federated training loop with additional logging, evaluation, and persistence features. It manages the lifecycle of federated training rounds, handles client communication via a `Grid`, aggregates training and evaluation metrics, tracks the best performing model based on accuracy, and ensures results are saved both locally and remotely for monitoring and analysis.
+
+File: task.py
+This file defines the core components of a PyTorch-based federated learning application using the Flower framework. It implements a neural network model (`Net`) for MNIST digit classification, along with training and evaluation functions (`train`, `test`) that operate on PyTorch data loaders. The file also includes a custom dataset class (`NPZDataset`) to load preprocessed data from `.npz` files, and utility functions for creating output directories and loading partitioned data. The code is structured to support federated learning scenarios where each client (or worker) trains on its local data partition and communicates updates to a central server. The `train` function handles model training with configurable epochs and learning rate, while `test` evaluates model performance. The `load_data` function enables loading partitioned datasets, making it suitable for distributed training across multiple clients. The `create_run_dir` function manages experiment tracking by creating timestamped output directories and saving configuration details. This setup allows for flexible and scalable federated learning experiments with PyTorch models.
+
+** Other Files (Config, Docs, etc.) **
+
+File: test/0.npz
+test/0.npz is a dataset file containing preprocessed MNIST test data in NPZ format, used for evaluating the trained model's performance during federated learning.
+
+File: test/1.npz
+test/1.npz is a dataset file containing preprocessed MNIST data partitioned for federated learning.
+
+File: test/2.npz
+test/2.npz is a dataset file containing preprocessed MNIST test data partitioned for federated learning clients.
+
+File: train/0.npz
+0.npz is a preprocessed dataset file containing numpy arrays for federated learning training.
+
+File: train/1.npz
+train/1.npz is a dataset file containing preprocessed training data in NPZ format, used for federated learning on the MNIST dataset.
+
+File: train/2.npz
+train/2.npz is a dataset file containing preprocessed training data partitioned for a specific client in a federated learning setup.

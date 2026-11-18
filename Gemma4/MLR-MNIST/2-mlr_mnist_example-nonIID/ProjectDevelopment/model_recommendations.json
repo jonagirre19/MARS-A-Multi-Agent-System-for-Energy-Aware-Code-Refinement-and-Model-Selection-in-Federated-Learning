@@ -1,0 +1,10 @@
+{
+  "recommendation_1": "Replace the single linear layer in the Net class with a Multi-Layer Perceptron (MLP) architecture consisting of two hidden layers with 128 and 64 neurons respectively, using ReLU activation functions.",
+  "rationale_1": "The current model is a linear regressor which cannot capture non-linear relationships in MNIST data; adding hidden layers with non-linear activations allows the model to learn complex feature representations.",
+  "recommendation_3": "Add a nn.Dropout(0.2) layer after the hidden layers in the MLP or CNN architecture.",
+  "rationale_3": "Non-IID data with high label skew across clients often leads to local overfitting on dominant classes; dropout provides regularization that helps the global model generalize better.",
+  "recommendation_4": "Replace the torch.optim.SGD optimizer in the train function with torch.optim.Adam(net.parameters(), lr=lr).",
+  "rationale_4": "Adam utilizes adaptive learning rates for each parameter, which typically converges faster and more reliably than standard SGD in federated settings where local gradients can vary wildly due to Dirichlet partitioning.",
+  "recommendation_5": "Replace F.log_softmax in the forward method with a raw linear output and change the criterion in the train function to nn.CrossEntropyLoss().",
+  "rationale_5": "While log_softmax is mathematically correct for NLLLoss, using raw logits with CrossEntropyLoss is the PyTorch standard for numerical stability and avoids redundant operations in the forward pass."
+}

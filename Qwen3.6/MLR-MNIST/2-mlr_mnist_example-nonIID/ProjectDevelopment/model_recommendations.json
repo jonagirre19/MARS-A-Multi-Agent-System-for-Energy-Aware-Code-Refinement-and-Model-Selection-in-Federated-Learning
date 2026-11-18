@@ -1,0 +1,12 @@
+{
+  "recommendation_1": "Replace the single linear layer with a two-layer fully connected network: change `self.fc = nn.Linear(input_dim, num_classes)` to `self.fc1 = nn.Linear(input_dim, 128); self.fc2 = nn.Linear(128, num_classes)`",
+  "rationale_1": "A deeper network can better capture the complexity of MNIST digit classification, especially under non-iid conditions where local data distributions vary significantly. Using 128 hidden units provides a good balance between capacity and computational efficiency.",
+  "recommendation_2": "Add dropout regularization with probability 0.2 after the first fully connected layer: insert `self.dropout = nn.Dropout(0.2)` and replace `x = self.fc1(x)` with `x = F.relu(self.fc1(x)); x = self.dropout(x)`",
+  "rationale_2": "Dropout helps prevent overfitting to local data patterns, which is crucial in non-iid settings where each client may have limited samples from certain classes. A value of 0.2 is effective for small networks like this one.",
+  "recommendation_3": "Use ReLU activation instead of identity in the forward pass: change `x = self.fc(x)` to `x = F.relu(self.fc(x))`",
+  "rationale_3": "ReLU introduces non-linearity which is essential for learning complex decision boundaries. It also helps mitigate vanishing gradient problems during training, improving convergence especially in multi-layer architectures.",
+  "recommendation_4": "Change the optimizer to Adam with learning rate 0.001: replace `torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9)` with `torch.optim.Adam(net.parameters(), lr=0.001)`",
+  "rationale_4": "Adam adapts learning rates per parameter and typically converges faster than SGD, particularly useful when dealing with heterogeneous data across clients. A fixed learning rate of 0.001 works well for simple architectures like this one.",
+  "recommendation_5": "Modify the loss function to use weighted cross-entropy with class weights computed from client data: add `class_weights = compute_class_weights(trainloader)` before training loop and use `criterion = torch.nn.CrossEntropyLoss(weight=class_weights)`",
+  "rationale_5": "Weighted cross-entropy addresses label imbalance in non-iid partitions by giving higher importance to underrepresented classes, which improves overall model generalization across all clients."
+}

@@ -1,0 +1,8 @@
+{
+  "recommendation_1": "Replace the single linear layer with a two-layer fully connected network by changing `self.fc1 = nn.Linear(input_dim, mid_dim)` and `self.fc = nn.Linear(mid_dim, num_classes)` to use `mid_dim=256` instead of 100",
+  "rationale_1": "A wider hidden layer increases model capacity to capture more complex patterns in the MNIST dataset, especially important given the non-IID nature where some clients have skewed class distributions.",
+  "recommendation_2": "Change the activation function from ReLU to Swish by replacing `F.relu(self.fc1(x))` with `F.swish(self.fc1(x))`",
+  "rationale_2": "Swish activation has been shown to outperform ReLU in many deep learning tasks including image classification, offering smoother gradients and better convergence properties.",
+  "recommendation_5": "Use a different optimizer such as AdamW instead of SGD with momentum by changing `optimizer = torch.optim.SGD(net.parameters(), lr=lr, momentum=0.9)` to `optimizer = torch.optim.AdamW(net.parameters(), lr=lr, weight_decay=1e-4)`",
+  "rationale_5": "AdamW combines adaptive learning rates with decoupled weight decay, often providing faster convergence and better performance than SGD, especially useful in FL scenarios with heterogeneous data."
+}
